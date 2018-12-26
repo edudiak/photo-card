@@ -20,14 +20,18 @@ let cardAnim = () => {
 	let cardOffsetTop = card.offset().top;
 
 	const coords = {
-		width: card.width(),
-		height: card.height(),
+		width: cardBg.width(),
+		height: cardBg.height(),
 		x: 0,
 		y: 0,
 		walk: 50
 	};
 
-	card.mousemove((e) => {
+	cardBg.mouseover((e) => {
+		TweenMax.to(cardBg, .4, {scale: 1.1});
+	});
+
+	cardBg.mousemove((e) => {
 		coords.x = (e.pageX - cardOffsetLeft) < 0 ? 0 : Math.round(e.pageX - cardOffsetLeft);
 		coords.y = (e.pageY - cardOffsetTop) < 0 ? 0 : Math.round(e.pageY - cardOffsetTop);
 
@@ -35,6 +39,13 @@ let cardAnim = () => {
 		let yWalk = Math.round((coords.y / coords.height * coords.walk) - (coords.walk / 2));
 
 		TweenMax.to(cardWImg, 1, {x: xWalk, y: yWalk});
+		TweenMax.to(cardWNumber, 1, {x: xWalk / 2, y: yWalk / 2});
+		TweenMax.to(cardTitle, 1, {x: (xWalk /2) * -1, y: (yWalk / 2) * -1});
+	});
+
+	cardBg.mouseout((e) => {
+		TweenMax.to(cardBg, .6, {scale: 1});
+		TweenMax.to([cardWImg, cardWNumber, cardTitle], .6, {x: 0, y: 0});
 	});
 
 };
