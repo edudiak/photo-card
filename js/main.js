@@ -28,27 +28,33 @@ let cardAnim = () => {
 		walk: 50
 	};
 
-	let tl = new TimelineMax();
+	let tl = new TimelineMax({paused: true});
 
-	cardBg.mouseover((e) => {
-		TweenMax.to(cardBg, .4, {scale: 1.1});
+	let numLettersAnim = (type) => {
 		tl
 			.staggerFromTo(cardNumberLetters.chars, .2, {
 				yPercent: 0,
 				opacity: 1,
 				ease: Expo.easeOut
 			}, {
-				yPercent: -60,
+				yPercent: type === 'mouseover' ? -60 : 60,
 				opacity: 0
 			}, .14)
 			.staggerFromTo(cardNumberLetters.chars, .7, {
-				yPercent: 60,
-				opacity: 0,
+				yPercent: type === 'mouseover' ? 60 : -60,
+				opacity: 0
 			}, {
 				yPercent: 0,
 				opacity: 1,
-				ease: Elastic.easeOut.config(1, .5)
+				ease: Elastic.easeOut.config(1, .8)
 			}, .14)
+		
+		tl.play();
+	};
+
+	cardBg.mouseover((e) => {
+		TweenMax.to(cardBg, .4, {scale: 1.1});
+		numLettersAnim(e.type);
 	});
 
 	cardBg.mousemove((e) => {
@@ -66,6 +72,7 @@ let cardAnim = () => {
 	cardBg.mouseout((e) => {
 		TweenMax.to(cardBg, .6, {scale: 1});
 		TweenMax.to([cardWImg, cardWNumber, cardTitle], .6, {x: 0, y: 0});
+		numLettersAnim(e.type);
 	});
 
 };
