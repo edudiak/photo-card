@@ -13,6 +13,7 @@ let cardAnim = () => {
 	const card = $('.card');
 	const cardTitle = $('.card_title');
 	const cardWNumber = $('.card_w_number');
+	const cardNumberLetters = new SplitText('.card_number', {type:'chars'});
 	const cardWImg = $('.card_w_img');
 	const cardBg = $('.card_bg');
 
@@ -27,8 +28,27 @@ let cardAnim = () => {
 		walk: 50
 	};
 
+	let tl = new TimelineMax();
+
 	cardBg.mouseover((e) => {
 		TweenMax.to(cardBg, .4, {scale: 1.1});
+		tl
+			.staggerFromTo(cardNumberLetters.chars, .2, {
+				yPercent: 0,
+				opacity: 1,
+				ease: Expo.easeOut
+			}, {
+				yPercent: -60,
+				opacity: 0
+			}, .14)
+			.staggerFromTo(cardNumberLetters.chars, .7, {
+				yPercent: 60,
+				opacity: 0,
+			}, {
+				yPercent: 0,
+				opacity: 1,
+				ease: Elastic.easeOut.config(1, .5)
+			}, .14)
 	});
 
 	cardBg.mousemove((e) => {
